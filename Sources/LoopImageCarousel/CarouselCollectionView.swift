@@ -41,7 +41,6 @@ class CarouselCollectionView: UICollectionView {
     }
 
     private func commonInit() {
-        decelerationRate = .fast
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         alwaysBounceVertical = false

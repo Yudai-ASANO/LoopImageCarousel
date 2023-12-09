@@ -7,14 +7,12 @@
 
 import UIKit
 
-let numberOfItemsMultiplier = 10
+let numberOfItemsMultiplier = 10 // ループのために実際のデータを10倍にする
 
 func handleLoop(collectionView: CarouselCollectionView, numberOfItems: Int) {
     let numberOfTotalItems = numberOfItems * numberOfItemsMultiplier
-    let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
-    let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-    let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint)
-    if let visibleIndex = visibleIndexPath?.item {
+    let visibleIndex = calculateVisibleIndex(in: collectionView)
+    if let visibleIndex {
         if visibleIndex == 0 {
             collectionView.scrollToItem(at: IndexPath(item: numberOfItems, section: 0), at: .centeredVertically, animated: false)
         }
