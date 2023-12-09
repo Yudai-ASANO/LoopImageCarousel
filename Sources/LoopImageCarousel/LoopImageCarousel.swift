@@ -85,8 +85,8 @@ open class LoopImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
 
     private var collectionView: CarouselCollectionView!
     private var contenteView: UIView!
-    
-    private let timer: ScrollTimer = ScrollTimer()
+
+    private let timer: ScrollTimer = .init()
 
     private func commonInit() {
         let contentView = UIView(frame: .zero)
@@ -143,10 +143,10 @@ open class LoopImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
         let numberOfRawItems = dataSource!.numberOfItems(in: self)
         handleLoop(collectionView: collectionView, numberOfItems: numberOfRawItems)
         if configuration.timeInterval > 0 {
-            timer.start(interval: configuration.timeInterval) {[weak self] in
+            timer.start(interval: configuration.timeInterval) { [weak self] in
                 guard let self else { return }
-                if let visibleIndex = calculateVisibleIndex(in: self.collectionView) {
-                    self.collectionView.scrollToItem(at: IndexPath(item: visibleIndex + 1, section: 0), at: .centeredHorizontally, animated: true)
+                if let visibleIndex = calculateVisibleIndex(in: collectionView) {
+                    collectionView.scrollToItem(at: IndexPath(item: visibleIndex + 1, section: 0), at: .centeredHorizontally, animated: true)
                 }
             }
         }
