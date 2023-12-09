@@ -22,14 +22,9 @@ open class LoopImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
     open weak var delegate: LoopImageCarouselDelegate?
     open weak var dataSource: LoopImageCarouselDataSource?
 
-    public var configuration: Configuration! {
+    public var configuration: Configuration = .init() {
         didSet {
-            let collectionViewLayout = createCarouselLayout(configuration: configuration)
-            let collectionView = CarouselCollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-            collectionView.delegate = self
-            collectionView.dataSource = self
-            contenteView.addSubview(collectionView)
-            self.collectionView = collectionView
+            collectionView.collectionViewLayout = createCarouselLayout(configuration: configuration)
         }
     }
 
@@ -73,7 +68,7 @@ open class LoopImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
     }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        dataSource!.numberOfItems(in: self) * 3
+        dataSource!.numberOfItems(in: self) * numberOfItemsMultiplier
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -95,6 +90,12 @@ open class LoopImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
         let contentView = UIView(frame: .zero)
         addSubview(contentView)
         contenteView = contentView
+        let collectionViewLayout = createCarouselLayout(configuration: configuration)
+        let collectionView = CarouselCollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        contenteView.addSubview(collectionView)
+        self.collectionView = collectionView
     }
 
     private func createCarouselLayout(configuration: Configuration) -> UICollectionViewLayout {
@@ -132,6 +133,12 @@ open class LoopImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
     private func createSection(configuration: Configuration) -> NSCollectionLayoutSection {
         let section = NSCollectionLayoutSection(group: createGroup(perView: configuration.perView, interItemSpacing: configuration.interItemSpacing))
         section.orthogonalScrollingBehavior = .groupPagingCentered
+        section.visibleItemsInvalidationHandler = handleVisibleItemsInvalidation
         return section
+    }
+    
+    private func handleVisibleItemsInvalidation(visibleItems: [NSCollectionLayoutVisibleItem], point: CGPoint, environment: NSCollectionLayoutEnvironment) {
+        let numberOfRawItems = dataSource!.numberOfItems(in: self)
+        handleLoop(collectionView: collectionView, numberOfItems: numberOfRawItems)
     }
 }
