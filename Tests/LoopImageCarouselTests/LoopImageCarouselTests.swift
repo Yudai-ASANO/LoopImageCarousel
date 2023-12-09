@@ -1,5 +1,5 @@
-import XCTest
 @testable import LoopImageCarousel
+import XCTest
 
 final class LoopImageCarouselTests: XCTestCase {
     func testExample() throws {
