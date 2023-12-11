@@ -7,7 +7,7 @@
 ### Configuration
 
 - `perView`: CGFloat - Determines what size the slides should be in relation to the container. Default is 1.
-- `interItemSpacing`: CGFloat - The spacing to use between items in the pager view. Default is 0.
+- `interItemSpacing`: CGFloat - The spacing to use between items in the carousel. Default is 0.
 - `timeInterval`:Double - The time interval of automatic sliding. 0 means disabling automatic sliding. Default is 0.
 
 **e.g**
@@ -61,7 +61,7 @@ view.addSubview(carousel)
 ```swift
     func loopImageCarousel(_ loopImageCarousel: LoopImageCarousel, currentItemAt index: Int)
 ```
-> Tells the delegate that the specified cell is about to be displayed in the carousel.
+> Tells the delegate the index of the cell that is going to be centered.
 
 ## Installation
 LoopImageCarousel is available through SPM. To install it, add the package to your dependencies in your `Package.swift` file.
